@@ -1,1 +1,1 @@
-# MultiTaskManager
+# PetPy：Parallel experiments' tools for Python
