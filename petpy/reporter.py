@@ -30,5 +30,3 @@ class Reporter:
         pass
     
     
-def report(message: str) -> None:
-    Reporter.report(message)
