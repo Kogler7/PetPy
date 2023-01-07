@@ -4,8 +4,11 @@ from petpy.reporter import Reporter
 from petpy.progress import progress
 from petpy.ansi_dec import ANSIDecorator
 
-def parallel(processes: int = None):
-    pass
+
+def parallel(processes: int = None, priority: int = 0):
+    par = Parallel(processes, priority)
+    return par.parallel
+
 
 def report(message: str) -> None:
     Reporter.report(message)
