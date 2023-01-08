@@ -2,7 +2,7 @@ from petpy.parallel import Parallel
 from petpy.listener import Listener
 from petpy.reporter import Reporter
 from petpy.progress import progress
-from petpy.ansi_dec import ANSIDecorator
+from petpy.ansi_deco import ANSIDecorator
 
 
 def parallel(processes: int = None, priority: int = 0):

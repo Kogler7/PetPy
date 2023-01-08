@@ -1,14 +1,15 @@
-from petpy.connect import Connection
+from petpy.rmi_proxy import Connection
 
 
 class Reporter:
 
     def __init__(self, conn: Connection) -> None:
-        pass
+        self._conn = conn
 
     @classmethod
-    def report(cls, message: str) -> None:
-        pass
+    def report(cls, *values: object, sep: str = None, end: str = None) -> None:
+        
+        print(*values, sep=sep, end=end)
 
     @classmethod
     def report_error(cls, message: str) -> None:

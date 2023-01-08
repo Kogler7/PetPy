@@ -3,7 +3,7 @@ import threading as th
 
 from petpy.reporter import Reporter
 from petpy.listener import Listener
-from petpy.connect import Connection
+from petpy.rmi_proxy import Connection
 
 
 class Parallel:
