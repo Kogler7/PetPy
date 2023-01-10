@@ -1,10 +1,11 @@
-from petpy.rmi_proxy import Connection
+from petpy.rmi_proxy import RMICaller
 
 
 class Reporter:
-
-    def __init__(self, conn: Connection) -> None:
-        self._conn = conn
+    caller:RMICaller = None
+    
+    def __new__(cls, caller: RMICaller):
+        cls.caller = caller
 
     @classmethod
     def report(cls, *values: object, sep: str = None, end: str = None) -> None:

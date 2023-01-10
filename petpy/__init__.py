@@ -2,7 +2,7 @@ from petpy.parallel import Parallel
 from petpy.listener import Listener
 from petpy.reporter import Reporter
 from petpy.progress import progress
-from petpy.ansi_deco import ANSIDecorator
+from petpy.ansi_wrap import ANSIWrapper
 
 
 def parallel(processes: int = None, priority: int = 0):
@@ -33,6 +33,6 @@ def error(message: str) -> None:
 __all__ = [
     "parallel", "progress",
     "Listener", "Reporter",
-    "ANSIDecorator",
+    "ANSIWrapper",
     "report", "info", "warn", "debug", "error"
 ]
