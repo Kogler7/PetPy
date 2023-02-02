@@ -1,4 +1,4 @@
-from petpy.rmi_proxy import RMICaller
+from petpy.utils.rmi_proxy import RMICaller
 
 
 class Reporter:

@@ -2,8 +2,8 @@ import multiprocessing as mp
 from queue import PriorityQueue
 
 from petpy.console import Console
-from petpy.base_task import TaskInfo, TaskEntity, TaskStatus
-from petpy.rmi_proxy import RMIProxy, RMICallee, RMICaller
+from petpy.base.base_task import TaskInfo, TaskEntity, TaskStatus
+from petpy.utils.rmi_proxy import RMICaller
 from petpy.reporter import Reporter
 
 

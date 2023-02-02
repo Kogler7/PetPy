@@ -1,8 +1,11 @@
-from petpy.parallel import Parallel
-from petpy.listener import Listener
+from petpy.executor.parallel import Parallel
 from petpy.reporter import Reporter
-from petpy.progress import progress
-from petpy.ansi_wrap import ANSIWrapper
+from petpy.progress.progress import progress
+from petpy.utils.ansi_wrap import ANSIWrapper
+
+
+def config(**kwargs) -> None:
+    pass
 
 
 def parallel(processes: int = None, priority: int = 0):

@@ -1,5 +1,5 @@
-from petpy.base_task import TaskInfo
-from petpy.rmi_proxy import RMIProxy, RMICallee, RMICaller
+from petpy.base.base_task import TaskInfo
+from petpy.utils.rmi_proxy import RMIProxy
 
 
 class Console:
