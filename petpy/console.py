@@ -1,25 +1,25 @@
-from petpy.base.base_task import TaskInfo
-from petpy.utils.rmi_proxy import RMIProxy
+import time
+
+from controller.graphics import GraphicsController
+from controller.progress import ProgressController
+from handler.command import CommandHandler
+from handler.input import InputHandler
+from handler.output import OutputHandler
 
 
-class Console:
-    task_info_map: dict[str, TaskInfo] = {}
-    local_caller, local_callee = RMIProxy.get_local_pair()
+class PetPyConsole:
+    def __init__(self):
+        self.graphics = GraphicsController()
 
-    def __init__(self) -> None:
-        pass
 
-    def start(self) -> None:
-        pass
-
-    def progress_new(self, task_id: str, init_total: int):
-        pass
-
-    def progress_set(self, task_id: str, step: int, total: int):
-        pass
-
-    def progress_add(self, task_id: str, exp_total: int):
-        pass
-
-    def progress_step(self, task_id: str, step: int):
-        pass
+if __name__ == '__main__':
+    console = PetPyConsole()
+    progress = console.graphics.progress
+    progress.add_task(tid=1, total=500, start=True)
+    progress.add_task(tid=2, total=1000, start=True)
+    progress.add_task(tid=3, total=200, start=True)
+    while not progress.finished:
+        progress.step(1)
+        progress.step(2, 10)
+        progress.step(3)
+        time.sleep(0.1)
