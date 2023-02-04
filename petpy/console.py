@@ -1,25 +1,37 @@
 import time
 
-from controller.graphics import GraphicsController
-from controller.progress import ProgressController
-from handler.command import CommandHandler
-from handler.input import InputHandler
-from handler.output import OutputHandler
+from petpy.base.task import TaskInfo
+from petpy.controller.graphics import GraphicsController
+from petpy.controller.progress import ProgressController
+
+from petpy.handler.input import InputHandler
+from petpy.handler.output import OutputHandler
+from petpy.handler.command import CommandHandler
 
 
 class PetPyConsole:
     def __init__(self):
-        self.graphics = GraphicsController()
-
-
-if __name__ == '__main__':
-    console = PetPyConsole()
-    progress = console.graphics.progress
-    progress.add_task(tid=1, total=500, start=True)
-    progress.add_task(tid=2, total=1000, start=True)
-    progress.add_task(tid=3, total=200, start=True)
-    while not progress.finished:
-        progress.step(1)
-        progress.step(2, 10)
-        progress.step(3)
-        time.sleep(0.1)
+        self.tasks: dict[int, TaskInfo] = {
+            0: TaskInfo(tid=0, total=100),  # 防止空字典被进行拷贝传递，稍后会被清空
+        }
+        self.graphics = GraphicsController(
+            tasks=self.tasks
+        )
+        self.progress = ProgressController(
+            tasks=self.tasks,
+            on_update=self.graphics.update_progress,
+        )
+        try:
+            self.command = CommandHandler(
+                console=self,
+                update_command=self.graphics.update_command,
+                update_tooltip=self.graphics.update_tooltip,
+                on_refresh=self.graphics.refresh,
+            )
+            self.input = InputHandler(
+                on_update=self.command.help,
+                on_enter=self.command.handle,
+            )
+            self.output = OutputHandler()
+        except Exception:
+            self.graphics.print_exception()

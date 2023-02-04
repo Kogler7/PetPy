@@ -95,9 +95,9 @@ class TaskTimingColumn(TaskInfoColumn):
 
 
 class ProgressRenderer(Renderer):
-    def __init__(self, header: str = None, tasks: dict[int, TaskInfo] = None):
-        self.header = header
-        self.tasks: dict[int, TaskInfo] = tasks or {}
+    def __init__(self, tasks: dict[int, TaskInfo]):
+        self.header = "Task Status"
+        self.tasks: dict[int, TaskInfo] = tasks
         self.columns = (
             TaskIDColumn(),
             TaskStatusColumn(),
@@ -105,6 +105,9 @@ class ProgressRenderer(Renderer):
             TaskProgressColumn(),
             TaskTimingColumn(),
         )
+
+    def update(self, *args, **kwargs):
+        pass
 
     def render(self):
         table = Table(

@@ -5,11 +5,15 @@ from rich.text import Text
 from rich.console import Console
 from rich.live import Live
 
-from petpy.renderer import Renderer, CommandRenderer, TooltipRenderer
+from petpy.base.task import TaskInfo
+from petpy.renderer.command import CommandRenderer
+from petpy.renderer.tooltip import TooltipRenderer
+from petpy.renderer.progress import ProgressRenderer
 
 
 class GraphicsController:
-    def __init__(self):
+    def __init__(self, tasks: dict[int, TaskInfo]):
+        self.tasks = tasks
         self.layout = Layout()
         self.console = Console()
         self.live = Live(
@@ -18,19 +22,34 @@ class GraphicsController:
             redirect_stderr=False,
             console=self.console,
             auto_refresh=True,
-            refresh_per_second=10,
+            refresh_per_second=4,
         )
         self.tooltip: TooltipRenderer = TooltipRenderer()
         self.command: CommandRenderer = CommandRenderer()
+        self.progress: ProgressRenderer = ProgressRenderer(self.tasks)
         self.setupLayout()
         self.live.start()
 
-    def update(self, target: str, renderer: Renderer):
-        self.layout[target].update(renderer.render())
+    def update_progress(self):
+        self.layout["main"].update(self.progress.render())
         self.refresh()
+
+    def update_command(self, cmd: str, cursor_pos: int):
+        self.command.update(cmd, cursor_pos)
+        self.layout["command"].update(
+            Panel(self.command.render(), border_style="white")
+        )
+
+    def update_tooltip(self, tip: str, match_strs: list[str]):
+        self.tooltip.update(tip, match_strs)
+        self.layout["tooltip"].update(self.tooltip.render())
 
     def refresh(self):
         self.live.refresh()
+
+    def print_exception(self):
+        self.live.stop()
+        self.console.print_exception()
 
     def setupLayout(self):
         self.layout.split(

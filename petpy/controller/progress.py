@@ -7,6 +7,7 @@ class ProgressController:
         self.onUpdate = on_update
         self.lock = RLock()
         self.tasks: dict[int, TaskInfo] = tasks or {}
+        self.tasks.clear()  # 防止空字典被进行拷贝传递，因而需要清空
 
     @property
     def finished(self) -> bool:
