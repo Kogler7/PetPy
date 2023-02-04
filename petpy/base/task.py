@@ -49,6 +49,7 @@ class TaskStatus(Enum):
 
 class Task:
     worker_task_map: dict[str, "Task"] = {}
+    total_task: int = 0
 
     @staticmethod
     def gene_worker_id():
@@ -63,11 +64,12 @@ class Task:
         return cls.worker_task_map.get(wrk_id, None)
 
     def __init__(self, future: Future, fn: callable, args, kwargs):
-        from executor import Executor
+        Task.total_task += 1
+        from petpy.executor.executor import Executor
         self.future: Future = future
         self.fn: callable = fn
         self.no: int = 0
-        self.id: str = ''
+        self.tid: int = self.total_task
         self.executor: Executor
         self.worker_id: str = '0-0'
         self.worker_type: Union[str, None] = None

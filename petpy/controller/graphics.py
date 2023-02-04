@@ -22,7 +22,7 @@ class GraphicsController:
             redirect_stderr=False,
             console=self.console,
             auto_refresh=True,
-            refresh_per_second=4,
+            refresh_per_second=10,
         )
         self.tooltip: TooltipRenderer = TooltipRenderer()
         self.command: CommandRenderer = CommandRenderer()
@@ -66,7 +66,7 @@ class GraphicsController:
 
         self.layout["title"].update(Align.left(Text("PetPy Console", style="bold yellow")))
         self.layout["version"].update(Align.right(Text("v0.0.1", style="bold yellow")))
-
+        self.layout["main"].update(self.progress.render())
         self.layout["tooltip"].update(self.tooltip.render())
 
         self.layout["command"].update(

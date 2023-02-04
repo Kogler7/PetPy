@@ -8,6 +8,8 @@ class EditableText:
 
     def insert(self, code: Key or str):
         char = code if isinstance(code, str) else code.char
+        if not char:
+            return
         self.text = self.text[:self.cursor] + char + self.text[self.cursor:]
         self.cursor += 1
 

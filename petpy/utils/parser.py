@@ -116,14 +116,15 @@ class ObjParser(BaseParser):
         self.objs = {'t', 'a', 'f', 's', 'e', 'l'}
 
     def help(self, strs: list[str]):
-        print("hah", strs)
         _str = strs[0] if strs else ''
         if not _str:
             return f"@<{'/'.join(self.objs)}>"
         else:
             if _str[0] == '@':
                 _str = _str[1:]
-            if _str and _str[0] in self.objs:
+            if not _str:
+                return f"@<{'/'.join(self.objs)}>"
+            if _str[0] in self.objs:
                 if _str[0] == 't':
                     if len(_str) >= 2 and _str[1] == '[':
                         if len(_str) >= 3 and _str[-1] == ']':

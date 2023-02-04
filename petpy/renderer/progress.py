@@ -117,6 +117,10 @@ class ProgressRenderer(Renderer):
         )
         for column in self.columns:
             table.add_column(column.name, justify=column.justify, style=column.style)
-        for task in self.tasks.values():
-            table.add_row(*[column.render(task) for column in self.columns])
+        if len(self.tasks) == 0:
+            no_task = TaskInfo(tid=-1, status=TaskStatus.WAITING)
+            table.add_row(*[column.render(no_task) for column in self.columns])
+        else:
+            for task in self.tasks.values():
+                table.add_row(*[column.render(task) for column in self.columns])
         return table

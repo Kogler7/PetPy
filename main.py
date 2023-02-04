@@ -1,62 +1,23 @@
 import time
-from executor import ConcurrentExecutor, runnable
-from task import Task
+from random import random
 
-
-def concurrent(fn: callable = None, max_workers: int = None, uid: str = '', show_console=True):
-    if fn is not None:
-        def wrapper():
-            with ConcurrentExecutor(max_workers, uid, show_console):
-                fn()
-
-        return wrapper
-
-    def wrapper(_fn: callable):
-        def inner(*args, **kwargs):
-            with ConcurrentExecutor(max_workers, uid, show_console):
-                _fn(*args, **kwargs)
-
-        return inner
-
-    return wrapper
-
-
-class Console:
-    show_console = True
-
-    def __init__(self, show_console=True):
-        self.show_console = show_console
-
-
-def progress(start: int, end: int = None, step: int = 1):
-    if end is None:
-        end = start
-        start = 0
-    for i in range(start, end, step):
-        if Console.show_console:
-            report(f"{i}/{end}")
-        yield i
-
-
-def report(*args, sep=' ', end='\n'):
-    task = Task.get_cur_task()
-    if task is not None:
-        print(f"[{task.no}]", *args, sep=sep, end=end)
-    else:
-        print(*args, sep=sep, end=end)
+from petpy.base.runnable import runnable
+from petpy.executor.concurrent import concurrent
+from petpy.utils.reporter import report
+from petpy.controller.progress import progress
 
 
 @runnable
 def mytask():
-    for i in progress(5):
+    for i in progress(100):
         report(i)
-        time.sleep(1)
+        time.sleep(random() * 0.9 + 0.1)
 
 
-@concurrent(max_workers=5)
+@concurrent(max_workers=3)
 def main():
     res_arr = []
-    for i in range(10):
+    for i in range(16):
         res = mytask()
         res_arr.append(res)
     for res in res_arr:
